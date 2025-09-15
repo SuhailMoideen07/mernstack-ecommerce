@@ -40,26 +40,62 @@ export const signup = async (req, res) => {
 //authenticate the user
     
     const {accessToken, refreshToken} = generateTokens(user._id); 
-    await storeRefreshToken(user._Id,refreshToken);
+    await storeRefreshToken(user._id,refreshToken);
     setCookies(res, accessToken, refreshToken);
 
-    res.status(201).json({user:{
+    res.status(201).json({
         _id: user._id,
         name: user.name,
         email:user.email,
         role:user.role
-    }
-        ,message:"User created successfully"})
+    })
+        
    } catch (error) {
     res.status(500).json({message: error.message})
+    console.log("Error in signup controller",error.message)
     
    }
 }
 
 export const login = async (req, res) => {
-    res.send("Login route called");
+    try {
+        const {email,password} = req.body
+        const user = await User.findOne({email})
+        
+        if(user && (await user.comparePassword(password))){
+            const {accessToken,refreshToken} = generateTokens(user._id)
+            
+            await storeRefreshToken(user._id,refreshToken)
+            setCookies(res,accessToken,refreshToken)
+            res.json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+
+        })
+        }
+        else{
+            res.status(401).json({message: "Invalid Email or Password"})
+        }
+    } catch (error) {
+        console.log("Error in login controller",error.message)
+        res.status(500).json({message: error.message})
+    }
 }
 
 export const logout = async (req,res)=>{
-    res.send("Logout function called")
+    try {
+       const refreshToken = req.cookies.refreshToken;
+       if(refreshToken){
+        const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
+        await redis.del(`refresh_token:${decoded.userId}`)
+    }
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
+    res.json({message:"Logged out successfully"})
+    } catch (error) {
+        res.status(500).json({message:"server error",error: error.message})
+        console.log("Error in logout controller",error.message)
+    }
 }
