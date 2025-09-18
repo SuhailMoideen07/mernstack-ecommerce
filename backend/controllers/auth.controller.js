@@ -125,9 +125,11 @@ export const refreshToken = async(req,res) => {
     res.json({message:"Token refreshed successfully"})
         
     } catch (error) {
-        console.log("Error in refreshToken controller");
+        console.log("Error in refresh token controller",error.message)
         res.status(500).json({message:"server error",error: error.message})
         
         
     }
 }
+//get profile to be done
+//export const getProfile = async(req,res)=>{}
