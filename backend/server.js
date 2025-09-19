@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json()); //allows to parse body of request
 app.use(cookieParser());
 app.use("/api/auth", authRoutes)
-app.use("/api/product",productRoutes)
+app.use("/api/products",productRoutes)
 app.listen(PORT, () => {
     console.log("Server is running on http://localhost:" + PORT);
     connectDB();
