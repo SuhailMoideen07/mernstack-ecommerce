@@ -3,6 +3,7 @@ import { updateQuantity, removeAllFromCart,addToCart,getCartProducts } from "../
 import { protectRoute } from "../middleware/auth.middleware";
 
 
+
 const router = express.Router();
 
 router.get("/",protectRoute,getCartProducts)
