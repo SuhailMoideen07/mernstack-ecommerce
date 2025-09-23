@@ -1,6 +1,6 @@
 import express from "express"
-import { updateQuantity, removeAllFromCart,addToCart,getCartProducts } from "../controllers/cart.controller";
-import { protectRoute } from "../middleware/auth.middleware";
+import { updateQuantity, removeAllFromCart,addToCart,getCartProducts } from "../controllers/cart.controller.js";
+import { protectRoute } from "../middleware/auth.middleware.js";
 
 
 
