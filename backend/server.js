@@ -7,6 +7,7 @@ import cartRoutes from "./routes/cart.routes.js"
 import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser";
 import paymentRoutes from "./routes/payment.routes.js"
+import analyticsRoutes from "./routes/analytics.routes.js"
 
 dotenv.config();
 
